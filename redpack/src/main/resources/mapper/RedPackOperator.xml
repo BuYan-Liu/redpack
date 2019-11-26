@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhenglong.redpack.operator.RedPackOperator">
+  <insert id="saveRocord" parameterType="RedPackImportRecord">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      select LAST_INSERT_ID()
+    </selectKey>
+    insert into redpack_import_record (date,remark) values (#{date},#{remark})
+  </insert>
+  
+  <insert id="saveRedPackMall" parameterType="RedPackMall">
+    insert into redpack_mall (mall_id,amount,status,record_id)
+    values (#{mallId},#{amount},#{status},#{recordId})
+  </insert>
+
+  <insert id="savePaymentResult" parameterType="PaymentResult">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      select LAST_INSERT_ID()
+    </selectKey>
+    insert into payment_result (
+                                return_code,
+                                return_msg,
+                                result_code,
+                                err_code,
+                                err_code_desc,
+                                partner_trade_no,
+                                payment_no,
+                                payment_time
+    ) values (
+              #{returnCode},
+              #{returnMsg},
+              #{resultCode},
+              #{errCode},
+              #{errCodeDesc},
+              #{partnerTradeNo},
+              #{paymentNo},
+              #{paymentTime}
+    );
+  </insert>
+
+  <select id="countByMallId" parameterType="String" resultType="Integer">
+    select count(id) from user where mall_id=#{mallId}
+  </select>
+
+  <select id="getLastRecordId" resultType="Integer">
+    select id from redpack_import_record where date=(select max(date) from redpack_import_record)
+  </select>
+
+  <select id="listByRecordId" parameterType="Integer" resultType="RedPackMall">
+    select id,mall_id,amount,payment_result_id from redpack_mall where record_id=#{recordId}
+  </select>
+
+  <select id="getUserWithMallId" parameterType="String" resultType="User">
+    select mall_id,headimg_url,nick_name,wx_number,open_id from user where mall_id=#{mall_id}
+  </select>
+
+  <select id="getRecordList" resultType="RedPackImportRecord">
+    select id,date from redpack_import_record
+  </select>
+
+  <select id="getSended" parameterType="Integer" resultType="Integer">
+    select sended from redpack_import_record where id=#{recordId}
+  </select>
+
+  <select id="getPaymentResult" parameterType="Integer" resultType="PaymentResult">
+    select *
+    from payment_result
+    where id=#{paymentResultId};
+  </select>
+
+  <update id="updatePaymentResultId">
+    update redpack_mall set payment_result_id=#{resultId} where id=#{id}
+  </update>
+
+  <update id="updateImportRecordSended">
+    update redpack_import_record set sended=#{sended} where id=#{recordId}
+  </update>
+</mapper>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhenglong.redpack.operator.MallUserOperator">
+  <insert id="add" parameterType="MallUser">
+    insert into mall_user
+      (status,mall_id,nick_name,create_time,super_mall_id,commission)
+    values
+           (#{status},#{mallId},#{nickName},#{createTime},#{superMallId},#{commission})
+  </insert>
+
+  <select id="get" parameterType="Long" resultType="MallUser">
+    select id,mall_id,status,nick_name,create_time,super_mall_id,commission from mall_user where id=#{id}
+  </select>
+
+  <select id="getList" resultType="MallUser">
+    select id,mall_id,status,nick_name,create_time,super_mall_id,commission from mall_user where status=#{condition.status}
+      <if test="condition.mallId!='001'">
+        and mall_id=#{condition.mallId}
+      </if>
+      <if test="condition.nickName!='ascii201907032016'">
+        and nick_name=#{condition.nickName}
+      </if>
+    limit #{start},#{size}
+  </select>
+
+  <select id="getAll" resultType="MallUser">
+    select id,mall_id,status,nick_name,create_time,super_mall_id,commission from mall_user 
+    where 1
+          <if test="mallId!='001'">
+            and mall_id=#{mallId}
+          </if>
+          <if test="nickName!='ascii201907032016'">
+            and nick_name like CONCAT('%',#{nickName},'%')
+          </if>
+          limit #{start},#{size}
+  </select>
+
+  <select id="getListWithStatus" resultType="MallUser">
+    select id,mall_id,status,nick_name,create_time,super_mall_id,commission from mall_user where status in
+      <foreach collection="statusArray" item="status" open="(" separator="," close=")">
+        #{status}
+      </foreach>
+      <if test="mallId!='001'">
+        and mall_id=#{mallId}
+      </if>
+      <if test="nickName!='ascii201907032016'">
+        and nick_name like CONCAT('%',#{nickName},'%')
+      </if>
+  </select>
+
+  <select id="getTotalCount" resultType="Integer">
+    select count(id) from mall_user
+    where 1
+    <if test="mallId!='001'">
+      and mall_id=#{mallId}
+    </if>
+    <if test="nickName!='ascii201907032016'">
+      and nick_name like CONCAT('%',#{nickName},'%')
+    </if>
+  </select>
+
+  <select id="getTotalCountWithCondition" parameterType="MallUser" resultType="Integer">
+    select count(id) from mall_user where status=#{status}
+    <if test="mallId!='001'">
+      and mall_id=#{mallId}
+    </if>
+    <if test="nickName!='ascii201907032016'">
+      and nick_name like CONCAT('%',#{nickName},'%')
+    </if>
+  </select>
+
+  <select id="getTotalCountWithStatus" resultType="Integer">
+    select count(id) from mall_user where status in
+      <foreach collection="statusArray" item="status" open="(" separator="," close=")">
+        #{status}
+      </foreach>
+      <if test="mallId!='001'">
+        and mall_id=#{mallId}
+      </if>
+      <if test="nickName!='ascii201907032016'">
+        and nick_name like CONCAT('%',#{nickName},'%')
+      </if>
+  </select>
+
+  <select id="getWithMallId" parameterType="String" resultType="MallUser">
+    select mall_id,nick_name,status,create_time,super_mall_id,commission
+      from mall_user where mall_id=#{mallId}
+  </select>
+
+  <update id="update" parameterType="MallUser">
+    update mall_user
+    set nick_name=#{nickName},super_mall_id=#{superMallId},commission=#{commission}
+    where mall_id=#{mallId}
+  </update>
+</mapper>

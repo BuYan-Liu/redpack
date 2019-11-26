@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhenglong.redpack.operator.AdminOperator">
+  <insert id="save" parameterType="Admin">
+    insert into admin (name,phone,password) values (#{name},#{phone},#{password})
+  </insert>
+
+  <insert id="saveToken">
+
+  </insert>
+
+  <select id="get" parameterType="Integer" resultType="Admin">
+    select id,name,phone,password from admin where id=#{id}
+  </select>
+
+  <select id="getToLogin" resultType="Admin">
+    select id from admin where phone=#{phone} and password=#{password}
+  </select>
+
+  <select id="getToken" parameterType="String" resultType="Token">
+    select admin_id,token,time from token where token=#{token}
+  </select>
+
+  <select id="admins" resultType="Admin">
+    select id,name,phone,password from admin
+  </select>
+
+  <update id="updateTokenTime">
+    update token set time=#{time} where id=#{id}
+  </update>
+
+  <update id="updateToken">
+    update token set token=#{token},time=#{time} where admin_id=#{adminId}
+  </update>
+
+  <update id="update">
+    update admin set name=#{name},phone=#{phone} where id=#{id}
+  </update>
+
+  <update id="updatePassword">
+    update admin set password=#{newPw} where id=#{id}
+  </update>
+</mapper>

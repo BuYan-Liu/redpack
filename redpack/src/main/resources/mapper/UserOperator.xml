@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhenglong.redpack.operator.UserOperator">
+
+  <select id="userList" resultType="User">
+    select * from user limit #{start},#{size}
+  </select>
+
+  <select id="getTotalCount" resultType="Integer">
+    select count(id) from user
+  </select>
+
+  <select id="userListFilter" resultType="User">
+    select * from user where 1
+      <if test="status!=-1">
+        and status=#{status}
+      </if>
+      <if test="subscribe!=-1">
+        and subscribe=#{subscribe}
+      </if>
+      <if test="sex!=-1">
+        and sex=#{sex}
+      </if>
+      <if test="mallId!='001'">
+        and mall_id=#{mallId}
+      </if>
+      <if test="nickName!='ascii201907032016'">
+        and nick_name like CONCAT('%',#{nickName},'%')
+      </if>
+    limit #{start},#{size}
+  </select>
+
+  <select id="getTotalCountFilter" resultType="Integer">
+    select count(id) from user where 1
+      <if test="status!=-1">
+        and status=#{status}
+      </if>
+      <if test="subscribe!=-1">
+        and subscribe=#{subscribe}
+      </if>
+      <if test="sex!=-1">
+        and sex=#{sex}
+      </if>
+      <if test="mallId!='001'">
+        and mall_id=#{mallId}
+      </if>
+      <if test="nickName!='ascii201907032016'">
+        and nick_name like CONCAT('%',#{nickName},'%')
+      </if>
+  </select>
+
+  <select id="countWithMallId" parameterType="String" resultType="Integer">
+    select count(id) from user where mall_id=#{mallId}
+  </select>
+
+  <select id="userListNickName" parameterType="String" resultType="User">
+    select * from user where nick_name like "%"#{nickName}"%"
+  </select>
+
+  <select id="userAll" resultType="User">
+    select * from user
+  </select>
+
+  <select id="getWithMallId" parameterType="String" resultType="Long">
+    select id from user where mall_id=#{mallId}
+  </select>
+
+  <update id="updateMallId">
+    update user set mall_id=#{mallUserId},status=#{statusCode} where id=#{userId}
+  </update>
+
+  <update id="updateMallStatus">
+    update mall_user set status=#{statusCode} where mall_id=#{mallUserId}
+  </update>
+
+  <update id="updateWxNumber">
+    update user set wx_number=#{wxNumber} where id=#{id}
+  </update>
+
+  <update id="updateRemark">
+    update user set remark=#{remark} where id=#{id}
+  </update>
+</mapper>

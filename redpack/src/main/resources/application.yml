@@ -1,0 +1,37 @@
+server:
+  port: 80
+spring:
+  application:
+    name: redPackManager
+  devtools:
+    remote:
+      restart:
+        enabled: true
+  servlet:
+    multipart:
+      enabled: true
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/red_pack?useUnicode=true&characterEncoding=UTF8&autoReconnectForPools=true&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: root
+    name: redPackDB
+#    password: zl20190528
+  aop:
+    auto: true
+    proxy-target-class: true
+  redis:
+    database: 0
+    host: 211.149.195.40
+    port: 6379
+mybatis:
+  type-aliases-package: com.zhenglong.redpack.entity
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: true
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+logging:
+  config: classpath:logback-boot.xml
+
+
