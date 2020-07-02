@@ -19,7 +19,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>1.8</java.version>
-    <mysqlVersion>8.0.15</mysqlVersion>
+    <mysqlVersion>8.0.16</mysqlVersion>
     <mybatisSpringVersion>2.0.0</mybatisSpringVersion>
     <druidVersion>1.1.16</druidVersion>
   </properties>
